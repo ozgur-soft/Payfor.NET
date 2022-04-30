@@ -8,24 +8,75 @@ Qnbpay (Finansbank) Virtual POS API with .NET
 dotnet add package Qnbpay --version 1.0.0
 ```
 
-# Usage
+# Sanalpos satış işlemi
 ```c#
-using Qnbpay;
+namespace Qnbpay {
+    internal class Program {
+        static void Main(string[] args) {
+            var qnbpay = new Qnbpay("PROD"); // PROD || TEST
+            qnbpay.SetMbrId(""); // Mbr Id
+            qnbpay.SetMerchantId(""); // Merchant id
+            qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
+            qnbpay.SetUsercode(""); // Usercode
+            qnbpay.SetUserPass(""); // Userpass
+            qnbpay.SetCardNumber("4242424242424242"); // Kart numarası
+            qnbpay.SetCardExpiry("02", "20"); // Son kullanma tarihi (Ay ve Yılın son 2 hanesi)
+            qnbpay.SetCardCode("123"); // Cvv2 Kodu (kartın arka yüzündeki 3 haneli numara)
+            qnbpay.SetAmount("1.00", "TRY"); // Satış tutarı ve para birimi
+            qnbpay.SetInstallment(""); // Taksit sayısı (varsa)
+            qnbpay.SetCardHolder(""); // Kart sahibi
+            qnbpay.SetLanguage("TR"); // TR || EN
+            var response = qnbpay.Pay();
+            if (response != null) {
+                Console.WriteLine(Qnbpay.JsonString<Qnbpay.CC5Response>(response));
+            }
+        }
+    }
+}
+```
 
-var qnbpay = new Qnbpay();
-qnbpay.SetMbrId("Mbr Id");
-qnbpay.SetMerchantId("Merchant id");
-qnbpay.SetMerchantPass("Merchant pass (storekey)");
-qnbpay.SetUserCode("API usercode");
-qnbpay.SetUserPass("API userpass");
-qnbpay.Pay(
-    "Credit card number (Eg: 4321432143214321)",
-    "Card month (Eg: 02)",
-    "Card year (Eg: 22)",
-    "Card security code: (Eg: 123)",
-    "Card holdername",
-    "Amount (Eg: 1.00)",
-    "Currency code ( $: 840 || €: 978 || ₺: 949 )",
-    "Language (TR || EN)"
-);
+# Sanalpos iade işlemi
+```c#
+namespace Qnbpay {
+    internal class Program {
+        static void Main(string[] args) {
+            var qnbpay = new Qnbpay("PROD"); // PROD || TEST
+            qnbpay.SetMbrId(""); // Mbr Id
+            qnbpay.SetMerchantId(""); // Merchant id
+            qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
+            qnbpay.SetUsercode(""); // Usercode
+            qnbpay.SetUserPass(""); // Userpass
+            qnbpay.SetAmount("1.00", "TRY"); // İade tutarı ve para birimi
+            qnbpay.SetOrgOrderId("SYS_"); // Sipariş numarası
+            qnbpay.SetLanguage("TR"); // TR || EN
+            var response = qnbpay.Refund();
+            if (response != null) {
+                Console.WriteLine(Qnbpay.JsonString<Qnbpay.CC5Response>(response));
+            }
+        }
+    }
+}
+```
+
+# Sanalpos iptal işlemi
+```c#
+namespace Qnbpay {
+    internal class Program {
+        static void Main(string[] args) {
+            var qnbpay = new Qnbpay("PROD"); // PROD || TEST
+            qnbpay.SetMbrId(""); // Mbr Id
+            qnbpay.SetMerchantId(""); // Merchant id
+            qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
+            qnbpay.SetUsercode(""); // Usercode
+            qnbpay.SetUserPass(""); // Userpass
+            qnbpay.SetAmount("1.00", "TRY"); // İptal tutarı ve para birimi
+            qnbpay.SetOrgOrderId("SYS_"); // Sipariş numarası
+            qnbpay.SetLanguage("TR"); // TR || EN
+            var response = qnbpay.Cancel();
+            if (response != null) {
+                Console.WriteLine(Qnbpay.JsonString<Qnbpay.CC5Response>(response));
+            }
+        }
+    }
+}
 ```
