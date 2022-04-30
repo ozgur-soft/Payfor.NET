@@ -5,11 +5,23 @@ using System.Xml.Serialization;
 
 namespace Qnbpay {
     public interface IQnbpay {
+        void SetMbrId(string mbrid);
         void SetMerchantId(string merchantid);
         void SetMerchantPass(string merchantpass);
         void SetUserCode(string usercode);
         void SetUserPass(string userpass);
-        Qnbpay.PayforResponse Pay(string cardnumber, string cardmonth, string cardyear, string cardcode, string cardholder, string price, string currency, string language, string moto);
+        void SetOrgOrderId(string orderid);
+        void SetAmount(string amount, string currency);
+        void SetInstallment(string installment);
+        void SetCardHolder(string cardholder);
+        void SetCardNumber(string cardnumber);
+        void SetCardExpiry(string cardmonth, string cardyear);
+        void SetCardCode(string cardcode);
+        void SetLanguage(string language);
+        void SetMOTO(string moto);
+        Qnbpay.PayforResponse Pay();
+        Qnbpay.PayforResponse Refund();
+        Qnbpay.PayforResponse Cancel();
     }
     public class Qnbpay : IQnbpay {
         private string Endpoint { get; set; }
@@ -18,6 +30,17 @@ namespace Qnbpay {
         private string MerchantPass { get; set; }
         private string UserCode { get; set; }
         private string UserPass { get; set; }
+        private string OrgOrderId { get; set; }
+        private string Amount { get; set; }
+        private string Currency { get; set; }
+        private string Installment { get; set; }
+        private string CardHolder { get; set; }
+        private string CardNumber { get; set; }
+        private string CardMonth { get; set; }
+        private string CardYear { get; set; }
+        private string CardCode { get; set; }
+        private string Language { get; set; }
+        private string MOTO { get; set; }
         public Qnbpay() {
             Endpoint = "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx";
         }
@@ -108,6 +131,45 @@ namespace Qnbpay {
         public void SetUserPass(string userpass) {
             UserPass = userpass;
         }
+        public void SetOrgOrderId(string orderid) {
+            OrgOrderId = orderid;
+        }
+        public void SetAmount(string amount, string currency) {
+            Amount = amount;
+            Currency = currency switch {
+                "TRY" => "949",
+                "YTL" => "949",
+                "TRL" => "949",
+                "TL" => "949",
+                "USD" => "840",
+                "EUR" => "978",
+                "GBP" => "826",
+                "JPY" => "392",
+                _ => null
+            };
+        }
+        public void SetInstallment(string installment) {
+            Installment = installment;
+        }
+        public void SetCardHolder(string cardholder) {
+            CardHolder = cardholder;
+        }
+        public void SetCardNumber(string cardnumber) {
+            CardNumber = cardnumber;
+        }
+        public void SetCardExpiry(string cardmonth, string cardyear) {
+            CardMonth = cardmonth;
+            CardYear = cardyear;
+        }
+        public void SetCardCode(string cardcode) {
+            CardCode = cardcode;
+        }
+        public void SetLanguage(string language) {
+            Language = language;
+        }
+        public void SetMOTO(string moto) {
+            MOTO = moto;
+        }
         public static string Hash(string data) {
             var hash = Convert.ToBase64String(SHA1.Create().ComputeHash(Encoding.ASCII.GetBytes(data)));
             return hash;
@@ -122,7 +184,7 @@ namespace Qnbpay {
             var hash = Hash(str);
             return hash == data.ResponseHash;
         }
-        public PayforResponse Pay(string cardnumber, string cardmonth, string cardyear, string cardcode, string cardholder, string price, string currency, string language, string moto = "0") {
+        public PayforResponse Pay() {
             var data = new PayforRequest {
                 MbrId = MbrId,
                 MerchantId = MerchantId,
@@ -130,14 +192,86 @@ namespace Qnbpay {
                 UserPass = UserPass,
                 TxnType = "Auth",
                 SecureType = "NonSecure",
-                CardHolder = cardholder,
-                CardNumber = cardnumber,
-                CardExpiry = cardmonth + cardyear,
-                CardCode = cardcode,
-                Amount = price,
-                Currency = currency,
-                MOTO = moto,
-                Lang = language
+                CardHolder = CardHolder,
+                CardNumber = CardNumber,
+                CardExpiry = CardMonth + CardYear,
+                CardCode = CardCode,
+                Amount = Amount,
+                Currency = Currency,
+                MOTO = MOTO ?? "0",
+                Lang = Language ?? "TR"
+            };
+            var payforrequest = new XmlSerializer(typeof(PayforRequest));
+            var payforresponse = new XmlSerializer(typeof(PayforResponse));
+            var writer = new Writer();
+            var ns = new XmlSerializerNamespaces();
+            ns.Add(string.Empty, string.Empty);
+            payforrequest.Serialize(writer, data, ns);
+            try {
+                var http = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) {
+                    Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml")
+                };
+                var response = http.Send(request);
+                var result = (PayforResponse)payforresponse.Deserialize(response.Content.ReadAsStream());
+                return result;
+            } catch (Exception err) {
+                if (err.InnerException != null) {
+                    Console.WriteLine(err.InnerException.Message);
+                } else {
+                    Console.WriteLine(err.Message);
+                }
+            }
+            return null;
+        }
+        public PayforResponse Refund() {
+            var data = new PayforRequest {
+                MbrId = MbrId,
+                MerchantId = MerchantId,
+                UserCode = UserCode,
+                UserPass = UserPass,
+                TxnType = "Refund",
+                SecureType = "NonSecure",
+                OrgOrderId = OrgOrderId,
+                Amount = Amount,
+                Currency = Currency,
+                Lang = Language ?? "TR"
+            };
+            var payforrequest = new XmlSerializer(typeof(PayforRequest));
+            var payforresponse = new XmlSerializer(typeof(PayforResponse));
+            var writer = new Writer();
+            var ns = new XmlSerializerNamespaces();
+            ns.Add(string.Empty, string.Empty);
+            payforrequest.Serialize(writer, data, ns);
+            try {
+                var http = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) {
+                    Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml")
+                };
+                var response = http.Send(request);
+                var result = (PayforResponse)payforresponse.Deserialize(response.Content.ReadAsStream());
+                return result;
+            } catch (Exception err) {
+                if (err.InnerException != null) {
+                    Console.WriteLine(err.InnerException.Message);
+                } else {
+                    Console.WriteLine(err.Message);
+                }
+            }
+            return null;
+        }
+        public PayforResponse Cancel() {
+            var data = new PayforRequest {
+                MbrId = MbrId,
+                MerchantId = MerchantId,
+                UserCode = UserCode,
+                UserPass = UserPass,
+                TxnType = "Void",
+                SecureType = "NonSecure",
+                OrgOrderId = OrgOrderId,
+                Amount = Amount,
+                Currency = Currency,
+                Lang = Language ?? "TR"
             };
             var payforrequest = new XmlSerializer(typeof(PayforRequest));
             var payforresponse = new XmlSerializer(typeof(PayforResponse));
