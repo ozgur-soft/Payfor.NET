@@ -1,5 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -41,8 +43,12 @@ namespace Qnbpay {
         private string CardCode { get; set; }
         private string Language { get; set; }
         private string MOTO { get; set; }
-        public Qnbpay() {
-            Endpoint = "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx";
+        public Qnbpay(string mode) {
+            Endpoint = mode switch {
+                "PROD" => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
+                "TEST" => "https://vpostest.qnbfinansbank.com/Gateway/XmlGate.aspx",
+                _ => null
+            };
         }
         [Serializable, XmlRoot("PayforRequest")]
         public class PayforRequest {
@@ -295,6 +301,9 @@ namespace Qnbpay {
                 }
             }
             return null;
+        }
+        public static string JsonString<T>(T data) where T : class {
+            return JsonSerializer.Serialize(data, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, WriteIndented = true });
         }
     }
 }
