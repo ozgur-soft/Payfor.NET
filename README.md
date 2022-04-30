@@ -17,7 +17,7 @@ namespace Qnbpay {
             qnbpay.SetMbrId(""); // Mbr Id
             qnbpay.SetMerchantId(""); // Merchant id
             qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
-            qnbpay.SetUsercode(""); // Usercode
+            qnbpay.SetUserCode(""); // Usercode
             qnbpay.SetUserPass(""); // Userpass
             qnbpay.SetCardNumber("4242424242424242"); // Kart numarası
             qnbpay.SetCardExpiry("02", "20"); // Son kullanma tarihi (Ay ve Yılın son 2 hanesi)
@@ -28,7 +28,7 @@ namespace Qnbpay {
             qnbpay.SetLanguage("TR"); // TR || EN
             var response = qnbpay.Pay();
             if (response != null) {
-                Console.WriteLine(Qnbpay.JsonString<Qnbpay.CC5Response>(response));
+                Console.WriteLine(Qnbpay.JsonString<Qnbpay.PayforResponse>(response));
             }
         }
     }
@@ -44,14 +44,14 @@ namespace Qnbpay {
             qnbpay.SetMbrId(""); // Mbr Id
             qnbpay.SetMerchantId(""); // Merchant id
             qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
-            qnbpay.SetUsercode(""); // Usercode
+            qnbpay.SetUserCode(""); // Usercode
             qnbpay.SetUserPass(""); // Userpass
             qnbpay.SetAmount("1.00", "TRY"); // İade tutarı ve para birimi
             qnbpay.SetOrgOrderId("SYS_"); // Sipariş numarası
             qnbpay.SetLanguage("TR"); // TR || EN
             var response = qnbpay.Refund();
             if (response != null) {
-                Console.WriteLine(Qnbpay.JsonString<Qnbpay.CC5Response>(response));
+                Console.WriteLine(Qnbpay.JsonString<Qnbpay.PayforResponse>(response));
             }
         }
     }
@@ -67,14 +67,14 @@ namespace Qnbpay {
             qnbpay.SetMbrId(""); // Mbr Id
             qnbpay.SetMerchantId(""); // Merchant id
             qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
-            qnbpay.SetUsercode(""); // Usercode
+            qnbpay.SetUserCode(""); // Usercode
             qnbpay.SetUserPass(""); // Userpass
             qnbpay.SetAmount("1.00", "TRY"); // İptal tutarı ve para birimi
             qnbpay.SetOrgOrderId("SYS_"); // Sipariş numarası
             qnbpay.SetLanguage("TR"); // TR || EN
             var response = qnbpay.Cancel();
             if (response != null) {
-                Console.WriteLine(Qnbpay.JsonString<Qnbpay.CC5Response>(response));
+                Console.WriteLine(Qnbpay.JsonString<Qnbpay.PayforResponse>(response));
             }
         }
     }
