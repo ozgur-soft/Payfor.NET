@@ -151,7 +151,7 @@ namespace Qnbpay {
                 "EUR" => "978",
                 "GBP" => "826",
                 "JPY" => "392",
-                _ => null
+                _ => currency
             };
         }
         public void SetInstallment(string installment) {
