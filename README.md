@@ -5,7 +5,7 @@ Qnbpay (Finansbank) Virtual POS API with .NET
 
 # Installation
 ```bash
-dotnet add package Qnbpay --version 1.0.0
+dotnet add package Qnbpay --version 1.1.0
 ```
 
 # Sanalpos satış işlemi
