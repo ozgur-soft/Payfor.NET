@@ -5,8 +5,8 @@ using System.Text.Json.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Qnbpay {
-    public interface IQnbpay {
+namespace Payfor {
+    public interface IPayfor {
         void SetMbrId(string mbrid);
         void SetMerchantId(string merchantid);
         void SetMerchantPass(string merchantpass);
@@ -21,11 +21,11 @@ namespace Qnbpay {
         void SetCardCode(string cardcode);
         void SetLanguage(string language);
         void SetMOTO(string moto);
-        Qnbpay.PayforResponse Pay();
-        Qnbpay.PayforResponse Refund();
-        Qnbpay.PayforResponse Cancel();
+        Payfor.PayforResponse Pay();
+        Payfor.PayforResponse Refund();
+        Payfor.PayforResponse Cancel();
     }
-    public class Qnbpay : IQnbpay {
+    public class Payfor : IPayfor {
         private string Endpoint { get; set; }
         private string MbrId { get; set; }
         private string MerchantId { get; set; }
@@ -43,7 +43,7 @@ namespace Qnbpay {
         private string CardCode { get; set; }
         private string Language { get; set; }
         private string MOTO { get; set; }
-        public Qnbpay(string mode) {
+        public Payfor(string mode) {
             Endpoint = mode switch {
                 "PROD" => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
                 "TEST" => "https://vpostest.qnbfinansbank.com/Gateway/XmlGate.aspx",

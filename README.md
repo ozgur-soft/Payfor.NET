@@ -1,19 +1,19 @@
-[![license](https://img.shields.io/:license-mit-blue.svg)](https://github.com/ozgur-soft/Qnbpay.NET/blob/main/LICENSE.md)
+[![license](https://img.shields.io/:license-mit-blue.svg)](https://github.com/ozgur-soft/Payfor.NET/blob/main/LICENSE.md)
 
-# Qnbpay.NET
-Qnbpay (Finansbank) Virtual POS API with .NET
+# Payfor.NET
+Payfor (Finansbank) Virtual POS API with .NET
 
 # Installation
 ```bash
-dotnet add package Qnbpay --version 1.1.1
+dotnet add package Payfor --version 1.1.1
 ```
 
 # Sanalpos satış işlemi
 ```c#
-namespace Qnbpay {
+namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var qnbpay = new Qnbpay("PROD"); // PROD || TEST
+            var qnbpay = new Payfor("PROD"); // PROD || TEST
             qnbpay.SetMbrId(""); // Mbr Id
             qnbpay.SetMerchantId(""); // Merchant id
             qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
@@ -28,7 +28,7 @@ namespace Qnbpay {
             qnbpay.SetLanguage("TR"); // TR || EN
             var response = qnbpay.Pay();
             if (response != null) {
-                Console.WriteLine(Qnbpay.JsonString<Qnbpay.PayforResponse>(response));
+                Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
             }
         }
     }
@@ -37,10 +37,10 @@ namespace Qnbpay {
 
 # Sanalpos iade işlemi
 ```c#
-namespace Qnbpay {
+namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var qnbpay = new Qnbpay("PROD"); // PROD || TEST
+            var qnbpay = new Payfor("PROD"); // PROD || TEST
             qnbpay.SetMbrId(""); // Mbr Id
             qnbpay.SetMerchantId(""); // Merchant id
             qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
@@ -51,7 +51,7 @@ namespace Qnbpay {
             qnbpay.SetLanguage("TR"); // TR || EN
             var response = qnbpay.Refund();
             if (response != null) {
-                Console.WriteLine(Qnbpay.JsonString<Qnbpay.PayforResponse>(response));
+                Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
             }
         }
     }
@@ -60,10 +60,10 @@ namespace Qnbpay {
 
 # Sanalpos iptal işlemi
 ```c#
-namespace Qnbpay {
+namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var qnbpay = new Qnbpay("PROD"); // PROD || TEST
+            var qnbpay = new Payfor("PROD"); // PROD || TEST
             qnbpay.SetMbrId(""); // Mbr Id
             qnbpay.SetMerchantId(""); // Merchant id
             qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
@@ -74,7 +74,7 @@ namespace Qnbpay {
             qnbpay.SetLanguage("TR"); // TR || EN
             var response = qnbpay.Cancel();
             if (response != null) {
-                Console.WriteLine(Qnbpay.JsonString<Qnbpay.PayforResponse>(response));
+                Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
             }
         }
     }
