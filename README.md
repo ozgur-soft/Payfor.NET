@@ -1,11 +1,9 @@
-[![license](https://img.shields.io/:license-mit-blue.svg)](https://github.com/ozgur-soft/Payfor.NET/blob/main/LICENSE.md)
-
 # Payfor.NET
 Payfor (Finansbank) Virtual POS API with .NET
 
 # Installation
 ```bash
-dotnet add package Payfor --version 1.1.1
+dotnet add package Payfor --version 1.2.0
 ```
 
 # Sanalpos satış işlemi
