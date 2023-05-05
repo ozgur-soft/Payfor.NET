@@ -177,7 +177,7 @@ namespace Payfor {
             return hash;
         }
         public bool Check3DHash(PayforResponse data) {
-            var str = MerchantId + MerchantPass + data.OrderId + data.AuthCode + data.ProcReturnCode + data.Status3D + data.ResponseRnd + UserCode;
+            var str = MerchantId + MerchantPass + data.OrderId + data.AuthCode + data.ProcReturnCode + data.Status3D + data.ResponseRnd + Username;
             var hash = Hash(str);
             return hash == data.ResponseHash;
         }
