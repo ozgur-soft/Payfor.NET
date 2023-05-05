@@ -6,7 +6,12 @@ using System.Xml;
 using System.Xml.Serialization;
 
 namespace Payfor {
+    public enum MODE {
+        PROD,
+        TEST
+    }
     public class Payfor {
+        public string Mode { set; get; }
         public string Endpoint { get; set; }
         public string MbrId { set; get; }
         public string MerchantId { get; set; }
@@ -28,10 +33,15 @@ namespace Payfor {
         internal void SetUserPass(string userpass) {
             UserPass = userpass;
         }
-        public Payfor(string mode) {
+        public Payfor(MODE mode) {
+            Mode = mode switch {
+                MODE.PROD => "PROD",
+                MODE.TEST => "TEST",
+                _ => null
+            };
             Endpoint = mode switch {
-                "PROD" => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
-                "TEST" => "https://vpostest.qnbfinansbank.com/Gateway/XmlGate.aspx",
+                MODE.PROD => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
+                MODE.TEST => "https://vpostest.qnbfinansbank.com/Gateway/XmlGate.aspx",
                 _ => null
             };
         }
