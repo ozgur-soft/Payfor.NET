@@ -6,43 +6,9 @@ using System.Xml;
 using System.Xml.Serialization;
 
 namespace Payfor {
-    public interface IPayfor {
-        void SetMbrId(string mbrid);
-        void SetMerchantId(string merchantid);
-        void SetMerchantPass(string merchantpass);
-        void SetUserCode(string usercode);
-        void SetUserPass(string userpass);
-        void SetOrgOrderId(string orderid);
-        void SetAmount(string amount, string currency);
-        void SetInstallment(string installment);
-        void SetCardHolder(string cardholder);
-        void SetCardNumber(string cardnumber);
-        void SetCardExpiry(string cardmonth, string cardyear);
-        void SetCardCode(string cardcode);
-        void SetLanguage(string language);
-        void SetMOTO(string moto);
-        Payfor.PayforResponse Pay();
-        Payfor.PayforResponse Refund();
-        Payfor.PayforResponse Cancel();
-    }
-    public class Payfor : IPayfor {
+    public class Payfor {
         private string Endpoint { get; set; }
-        private string MbrId { get; set; }
-        private string MerchantId { get; set; }
-        private string MerchantPass { get; set; }
-        private string UserCode { get; set; }
-        private string UserPass { get; set; }
-        private string OrgOrderId { get; set; }
-        private string Amount { get; set; }
-        private string Currency { get; set; }
-        private string Installment { get; set; }
-        private string CardHolder { get; set; }
-        private string CardNumber { get; set; }
-        private string CardMonth { get; set; }
-        private string CardYear { get; set; }
-        private string CardCode { get; set; }
-        private string Language { get; set; }
-        private string MOTO { get; set; }
+        private string Storekey { get; set; }
         public Payfor(string mode) {
             Endpoint = mode switch {
                 "PROD" => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
@@ -53,47 +19,97 @@ namespace Payfor {
         [Serializable, XmlRoot("PayforRequest")]
         public class PayforRequest {
             [XmlElement("MbrId", IsNullable = false)]
-            public string MbrId { init; get; }
+            public string MbrId { set; get; }
             [XmlElement("MerchantId", IsNullable = false)]
-            public string MerchantId { init; get; }
+            public string MerchantId { set; get; }
             [XmlElement("UserCode", IsNullable = false)]
-            public string UserCode { init; get; }
+            public string UserCode { set; get; }
             [XmlElement("UserPass", IsNullable = false)]
-            public string UserPass { init; get; }
+            public string UserPass { set; get; }
             [XmlElement("SecureType", IsNullable = false)]
-            public string SecureType { init; get; }
+            public string SecureType { set; get; }
             [XmlElement("TxnType", IsNullable = false)]
-            public string TxnType { init; get; }
+            public string TxnType { set; get; }
             [XmlElement("PurchAmount", IsNullable = false)]
-            public string Amount { init; get; }
+            public string Amount { set; get; }
             [XmlElement("Currency", IsNullable = false)]
-            public string Currency { init; get; }
+            public string Currency { set; get; }
             [XmlElement("InstallmentCount", IsNullable = false)]
-            public string Installment { init; get; }
+            public string Installment { set; get; }
             [XmlElement("CardHolderName", IsNullable = false)]
-            public string CardHolder { init; get; }
+            public string CardHolder { set; get; }
             [XmlElement("Pan", IsNullable = false)]
-            public string CardNumber { init; get; }
+            public string CardNumber { set; get; }
             [XmlElement("Expiry", IsNullable = false)]
-            public string CardExpiry { init; get; }
+            public string CardExpiry { set; get; }
             [XmlElement("Cvv2", IsNullable = false)]
-            public string CardCode { init; get; }
+            public string CardCode { set; get; }
             [XmlElement("OrderId", IsNullable = false)]
-            public string OrderId { init; get; }
+            public string OrderId { set; get; }
             [XmlElement("OrgOrderId", IsNullable = false)]
-            public string OrgOrderId { init; get; }
+            public string OrgOrderId { set; get; }
             [XmlElement("OkUrl", IsNullable = false)]
-            public string OkUrl { init; get; }
+            public string OkUrl { set; get; }
             [XmlElement("FailUrl", IsNullable = false)]
-            public string FailUrl { init; get; }
+            public string FailUrl { set; get; }
             [XmlElement("Rnd", IsNullable = false)]
-            public string Rnd { init; get; }
+            public string Rnd { set; get; }
             [XmlElement("Hash", IsNullable = false)]
-            public string Hash { init; get; }
+            public string Hash { set; get; }
             [XmlElement("MOTO", IsNullable = false)]
-            public string MOTO { init; get; }
+            public string MOTO { set; get; }
             [XmlElement("Lang", IsNullable = false)]
-            public string Lang { init; get; }
+            public string Language { set; get; }
+            internal void SetMbrId(string mbrid) {
+                MbrId = mbrid;
+            }
+            internal void SetMerchantId(string merchantid) {
+                MerchantId = merchantid;
+            }
+            internal void SetUserCode(string usercode) {
+                UserCode = usercode;
+            }
+            internal void SetUserPass(string userpass) {
+                UserPass = userpass;
+            }
+            internal void SetOrgOrderId(string orderid) {
+                OrgOrderId = orderid;
+            }
+            internal void SetAmount(string amount, string currency) {
+                Amount = amount;
+                Currency = currency switch {
+                    "TRY" => "949",
+                    "YTL" => "949",
+                    "TRL" => "949",
+                    "TL" => "949",
+                    "USD" => "840",
+                    "EUR" => "978",
+                    "GBP" => "826",
+                    "JPY" => "392",
+                    _ => currency
+                };
+            }
+            internal void SetInstallment(string installment) {
+                Installment = installment;
+            }
+            internal void SetCardHolder(string cardholder) {
+                CardHolder = cardholder;
+            }
+            internal void SetCardNumber(string cardnumber) {
+                CardNumber = cardnumber;
+            }
+            internal void SetCardExpiry(string cardmonth, string cardyear) {
+                CardExpiry = cardmonth+cardyear;
+            }
+            internal void SetCardCode(string cardcode) {
+                CardCode = cardcode;
+            }
+            internal void SetLanguage(string language) {
+                Language = language;
+            }
+            internal void SetMOTO(string moto) {
+                MOTO = moto;
+            }
         }
 
         [Serializable, XmlRoot("PayforResponse")]
@@ -122,60 +138,6 @@ namespace Payfor {
         public class Writer : StringWriter {
             public override Encoding Encoding => Encoding.UTF8;
         }
-        public void SetMbrId(string mbrid) {
-            MbrId = mbrid;
-        }
-        public void SetMerchantId(string merchantid) {
-            MerchantId = merchantid;
-        }
-        public void SetMerchantPass(string merchantpass) {
-            MerchantPass = merchantpass;
-        }
-        public void SetUserCode(string usercode) {
-            UserCode = usercode;
-        }
-        public void SetUserPass(string userpass) {
-            UserPass = userpass;
-        }
-        public void SetOrgOrderId(string orderid) {
-            OrgOrderId = orderid;
-        }
-        public void SetAmount(string amount, string currency) {
-            Amount = amount;
-            Currency = currency switch {
-                "TRY" => "949",
-                "YTL" => "949",
-                "TRL" => "949",
-                "TL" => "949",
-                "USD" => "840",
-                "EUR" => "978",
-                "GBP" => "826",
-                "JPY" => "392",
-                _ => currency
-            };
-        }
-        public void SetInstallment(string installment) {
-            Installment = installment;
-        }
-        public void SetCardHolder(string cardholder) {
-            CardHolder = cardholder;
-        }
-        public void SetCardNumber(string cardnumber) {
-            CardNumber = cardnumber;
-        }
-        public void SetCardExpiry(string cardmonth, string cardyear) {
-            CardMonth = cardmonth;
-            CardYear = cardyear;
-        }
-        public void SetCardCode(string cardcode) {
-            CardCode = cardcode;
-        }
-        public void SetLanguage(string language) {
-            Language = language;
-        }
-        public void SetMOTO(string moto) {
-            MOTO = moto;
-        }
         public static string Hash(string data) {
             var hash = Convert.ToBase64String(SHA1.Create().ComputeHash(Encoding.ASCII.GetBytes(data)));
             return hash;
@@ -190,23 +152,7 @@ namespace Payfor {
             var hash = Hash(str);
             return hash == data.ResponseHash;
         }
-        public PayforResponse Pay() {
-            var data = new PayforRequest {
-                MbrId = MbrId,
-                MerchantId = MerchantId,
-                UserCode = UserCode,
-                UserPass = UserPass,
-                TxnType = "Auth",
-                SecureType = "NonSecure",
-                CardHolder = CardHolder,
-                CardNumber = CardNumber,
-                CardExpiry = CardMonth + CardYear,
-                CardCode = CardCode,
-                Amount = Amount,
-                Currency = Currency,
-                MOTO = MOTO ?? "0",
-                Lang = Language ?? "TR"
-            };
+        public PayforResponse Auth(PayforRequest data) {
             var payforrequest = new XmlSerializer(typeof(PayforRequest));
             var payforresponse = new XmlSerializer(typeof(PayforResponse));
             using var writer = new Writer();
@@ -230,19 +176,7 @@ namespace Payfor {
             }
             return null;
         }
-        public PayforResponse Refund() {
-            var data = new PayforRequest {
-                MbrId = MbrId,
-                MerchantId = MerchantId,
-                UserCode = UserCode,
-                UserPass = UserPass,
-                TxnType = "Refund",
-                SecureType = "NonSecure",
-                OrgOrderId = OrgOrderId,
-                Amount = Amount,
-                Currency = Currency,
-                Lang = Language ?? "TR"
-            };
+        public PayforResponse Refund(PayforRequest data) {
             var payforrequest = new XmlSerializer(typeof(PayforRequest));
             var payforresponse = new XmlSerializer(typeof(PayforResponse));
             using var writer = new Writer();
@@ -266,19 +200,7 @@ namespace Payfor {
             }
             return null;
         }
-        public PayforResponse Cancel() {
-            var data = new PayforRequest {
-                MbrId = MbrId,
-                MerchantId = MerchantId,
-                UserCode = UserCode,
-                UserPass = UserPass,
-                TxnType = "Void",
-                SecureType = "NonSecure",
-                OrgOrderId = OrgOrderId,
-                Amount = Amount,
-                Currency = Currency,
-                Lang = Language ?? "TR"
-            };
+        public PayforResponse Cancel(PayforRequest data) {
             var payforrequest = new XmlSerializer(typeof(PayforRequest));
             var payforresponse = new XmlSerializer(typeof(PayforResponse));
             using var writer = new Writer();
