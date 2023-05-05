@@ -160,50 +160,21 @@ namespace Payfor {
             return hash == data.ResponseHash;
         }
         public PayforResponse Auth(PayforRequest data) {
-            var payforrequest = new XmlSerializer(typeof(PayforRequest));
-            var payforresponse = new XmlSerializer(typeof(PayforResponse));
-            using var writer = new Writer();
-            var ns = new XmlSerializerNamespaces();
-            ns.Add(string.Empty, string.Empty);
-            payforrequest.Serialize(writer, data, ns);
-            try {
-                using var http = new HttpClient();
-                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml") };
-                using var response = http.Send(request);
-                var result = (PayforResponse)payforresponse.Deserialize(response.Content.ReadAsStream());
-                return result;
-            } catch (Exception err) {
-                if (err.InnerException != null) {
-                    Console.WriteLine(err.InnerException.Message);
-                } else {
-                    Console.WriteLine(err.Message);
-                }
-            }
-            return null;
+            data.TxnType = "Auth";
+            data.SecureType = "NonSecure";
+            return Transaction(data);
         }
         public PayforResponse Refund(PayforRequest data) {
-            var payforrequest = new XmlSerializer(typeof(PayforRequest));
-            var payforresponse = new XmlSerializer(typeof(PayforResponse));
-            using var writer = new Writer();
-            var ns = new XmlSerializerNamespaces();
-            ns.Add(string.Empty, string.Empty);
-            payforrequest.Serialize(writer, data, ns);
-            try {
-                using var http = new HttpClient();
-                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml") };
-                using var response = http.Send(request);
-                var result = (PayforResponse)payforresponse.Deserialize(response.Content.ReadAsStream());
-                return result;
-            } catch (Exception err) {
-                if (err.InnerException != null) {
-                    Console.WriteLine(err.InnerException.Message);
-                } else {
-                    Console.WriteLine(err.Message);
-                }
-            }
-            return null;
+            data.TxnType = "Refund";
+            data.SecureType = "NonSecure";
+            return Transaction(data);
         }
         public PayforResponse Cancel(PayforRequest data) {
+            data.TxnType = "Void";
+            data.SecureType = "NonSecure";
+            return Transaction(data);
+        }
+        public PayforResponse Transaction(PayforRequest data) {
             var payforrequest = new XmlSerializer(typeof(PayforRequest));
             var payforresponse = new XmlSerializer(typeof(PayforResponse));
             using var writer = new Writer();
