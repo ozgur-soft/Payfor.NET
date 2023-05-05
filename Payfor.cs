@@ -190,7 +190,7 @@ namespace Payfor {
             data.UserPass = UserPass;
             data.MOTO ??= "0";
             data.Language ??= "TR";
-            return Transaction(data);
+            return _Transaction(data);
         }
         public PayforResponse Refund(PayforRequest data) {
             data.TxnType = "Refund";
@@ -201,7 +201,7 @@ namespace Payfor {
             data.UserPass = UserPass;
             data.MOTO ??= "0";
             data.Language ??= "TR";
-            return Transaction(data);
+            return _Transaction(data);
         }
         public PayforResponse Cancel(PayforRequest data) {
             data.TxnType = "Void";
@@ -212,9 +212,9 @@ namespace Payfor {
             data.UserPass = UserPass;
             data.MOTO ??= "0";
             data.Language ??= "TR";
-            return Transaction(data);
+            return _Transaction(data);
         }
-        public PayforResponse Transaction(PayforRequest data) {
+        private PayforResponse _Transaction(PayforRequest data) {
             var payforrequest = new XmlSerializer(typeof(PayforRequest));
             var payforresponse = new XmlSerializer(typeof(PayforResponse));
             using var writer = new Writer();
