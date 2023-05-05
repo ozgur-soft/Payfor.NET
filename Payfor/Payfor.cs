@@ -106,6 +106,19 @@ namespace Payfor {
                     _ => currency
                 };
             }
+            internal void SetCurrency(string currency) {
+                Currency = currency switch {
+                    "TRY" => "949",
+                    "YTL" => "949",
+                    "TRL" => "949",
+                    "TL" => "949",
+                    "USD" => "840",
+                    "EUR" => "978",
+                    "GBP" => "826",
+                    "JPY" => "392",
+                    _ => currency
+                };
+            }
             internal void SetInstallment(string installment) {
                 Installment = installment;
             }
