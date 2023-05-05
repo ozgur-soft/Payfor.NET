@@ -18,19 +18,19 @@ namespace Payfor {
         public string MerchantPass { get; set; }
         public string Username { set; get; }
         public string Password { set; get; }
-        internal void SetMbrId(string mbrid) {
+        public void SetMbrId(string mbrid) {
             MbrId = mbrid;
         }
-        internal void SetMerchantId(string merchantid) {
+        public void SetMerchantId(string merchantid) {
             MerchantId = merchantid;
         }
-        internal void SetMerchantPass(string merchantpass) {
+        public void SetMerchantPass(string merchantpass) {
             MerchantPass = merchantpass;
         }
-        internal void SetUsername(string username) {
+        public void SetUsername(string username) {
             Username = username;
         }
-        internal void SetPassword(string password) {
+        public void SetPassword(string password) {
             Password = password;
         }
         public Payfor(MODE mode) {
@@ -89,10 +89,10 @@ namespace Payfor {
             public string MOTO { set; get; }
             [XmlElement("Lang", IsNullable = false)]
             public string Language { set; get; }
-            internal void SetOrgOrderId(string orderid) {
+            public void SetOrgOrderId(string orderid) {
                 OrgOrderId = orderid;
             }
-            internal void SetAmount(string amount, string currency) {
+            public void SetAmount(string amount, string currency) {
                 Amount = amount;
                 Currency = currency switch {
                     "TRY" => "949",
@@ -106,7 +106,7 @@ namespace Payfor {
                     _ => currency
                 };
             }
-            internal void SetCurrency(string currency) {
+            public void SetCurrency(string currency) {
                 Currency = currency switch {
                     "TRY" => "949",
                     "YTL" => "949",
@@ -119,25 +119,25 @@ namespace Payfor {
                     _ => currency
                 };
             }
-            internal void SetInstallment(string installment) {
+            public void SetInstallment(string installment) {
                 Installment = installment;
             }
-            internal void SetCardHolder(string cardholder) {
+            public void SetCardHolder(string cardholder) {
                 CardHolder = cardholder;
             }
-            internal void SetCardNumber(string cardnumber) {
+            public void SetCardNumber(string cardnumber) {
                 CardNumber = cardnumber;
             }
-            internal void SetCardExpiry(string cardmonth, string cardyear) {
+            public void SetCardExpiry(string cardmonth, string cardyear) {
                 CardExpiry = cardmonth + cardyear;
             }
-            internal void SetCardCode(string cardcode) {
+            public void SetCardCode(string cardcode) {
                 CardCode = cardcode;
             }
-            internal void SetLanguage(string language) {
+            public void SetLanguage(string language) {
                 Language = language;
             }
-            internal void SetMOTO(string moto) {
+            public void SetMOTO(string moto) {
                 MOTO = moto;
             }
         }
