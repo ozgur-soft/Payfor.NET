@@ -118,7 +118,6 @@ namespace Payfor {
                 MOTO = moto;
             }
         }
-
         [Serializable, XmlRoot("PayforResponse")]
         public class PayforResponse {
             [XmlElement("OrderId")]
@@ -162,16 +161,34 @@ namespace Payfor {
         public PayforResponse Auth(PayforRequest data) {
             data.TxnType = "Auth";
             data.SecureType = "NonSecure";
+            data.MbrId = MbrId;
+            data.MerchantId = MerchantId;
+            data.UserCode = UserCode;
+            data.UserPass = UserPass;
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
             return Transaction(data);
         }
         public PayforResponse Refund(PayforRequest data) {
             data.TxnType = "Refund";
             data.SecureType = "NonSecure";
+            data.MbrId = MbrId;
+            data.MerchantId = MerchantId;
+            data.UserCode = UserCode;
+            data.UserPass = UserPass;
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
             return Transaction(data);
         }
         public PayforResponse Cancel(PayforRequest data) {
             data.TxnType = "Void";
             data.SecureType = "NonSecure";
+            data.MbrId = MbrId;
+            data.MerchantId = MerchantId;
+            data.UserCode = UserCode;
+            data.UserPass = UserPass;
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
             return Transaction(data);
         }
         public PayforResponse Transaction(PayforRequest data) {
