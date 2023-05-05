@@ -6,25 +6,26 @@ Payfor (Finansbank) Virtual POS API with .NET
 dotnet add package Payfor --version 1.2.0
 ```
 
-# Sanalpos satış işlemi
+# Satış
 ```c#
 namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var qnbpay = new Payfor("PROD"); // PROD || TEST
-            qnbpay.SetMbrId(""); // Mbr Id
-            qnbpay.SetMerchantId(""); // Merchant id
-            qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
-            qnbpay.SetUserCode(""); // Usercode
-            qnbpay.SetUserPass(""); // Userpass
-            qnbpay.SetCardNumber("4242424242424242"); // Kart numarası
-            qnbpay.SetCardExpiry("02", "20"); // Son kullanma tarihi (Ay ve Yılın son 2 hanesi)
-            qnbpay.SetCardCode("123"); // Cvv2 Kodu (kartın arka yüzündeki 3 haneli numara)
-            qnbpay.SetAmount("1.00", "TRY"); // Satış tutarı ve para birimi
-            qnbpay.SetInstallment(""); // Taksit sayısı (varsa)
-            qnbpay.SetCardHolder(""); // Kart sahibi
-            qnbpay.SetLanguage("TR"); // TR || EN
-            var response = qnbpay.Pay();
+            var qnbpay = new Payfor(MODE.TEST); // PROD || TEST
+            qnbpay.SetMbrId("5"); // Mbr Id
+            qnbpay.SetMerchantId("085300000009704"); // Merchant id
+            qnbpay.SetMerchantPass("12345678"); // Merchant pass (storekey)
+            qnbpay.SetUserCode("QNB_API_KULLANICI_3DPAY"); // Usercode
+            qnbpay.SetUserPass("UcBN0"); // Userpass
+            var request = new Payfor.PayforRequest();
+            request.SetCardHolder(""); // Kart sahibi
+            request.SetCardNumber("4155650100416111"); // Kart numarası
+            request.SetCardExpiry("01", "25"); // Son kullanma tarihi (Ay ve Yılın son 2 hanesi)
+            request.SetCardCode("123"); // Cvv2 Kodu (kartın arka yüzündeki 3 haneli numara)
+            request.SetAmount("1.00", "TRY"); // Satış tutarı ve para birimi
+            request.SetInstallment(""); // Taksit sayısı (varsa)
+            request.SetLanguage("TR"); // TR || EN
+            var response = qnbpay.Auth(request);
             if (response != null) {
                 Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
             }
@@ -33,21 +34,22 @@ namespace Payfor {
 }
 ```
 
-# Sanalpos iade işlemi
+# İade
 ```c#
 namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var qnbpay = new Payfor("PROD"); // PROD || TEST
-            qnbpay.SetMbrId(""); // Mbr Id
-            qnbpay.SetMerchantId(""); // Merchant id
-            qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
-            qnbpay.SetUserCode(""); // Usercode
-            qnbpay.SetUserPass(""); // Userpass
-            qnbpay.SetAmount("1.00", "TRY"); // İade tutarı ve para birimi
-            qnbpay.SetOrgOrderId("SYS_"); // Sipariş numarası
-            qnbpay.SetLanguage("TR"); // TR || EN
-            var response = qnbpay.Refund();
+            var qnbpay = new Payfor(MODE.TEST); // PROD || TEST
+            qnbpay.SetMbrId("5"); // Mbr Id
+            qnbpay.SetMerchantId("085300000009704"); // Merchant id
+            qnbpay.SetMerchantPass("12345678"); // Merchant pass (storekey)
+            qnbpay.SetUserCode("QNB_API_KULLANICI_3DPAY"); // Usercode
+            qnbpay.SetUserPass("UcBN0"); // Userpass
+            var request = new Payfor.PayforRequest();
+            request.SetAmount("1.00", "TRY"); // Satış tutarı ve para birimi
+            request.SetOrgOrderId("SYS_"); // Sipariş numarası
+            request.SetLanguage("TR"); // TR || EN
+            var response = qnbpay.Refund(request);
             if (response != null) {
                 Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
             }
@@ -56,21 +58,22 @@ namespace Payfor {
 }
 ```
 
-# Sanalpos iptal işlemi
+# İptal
 ```c#
 namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var qnbpay = new Payfor("PROD"); // PROD || TEST
-            qnbpay.SetMbrId(""); // Mbr Id
-            qnbpay.SetMerchantId(""); // Merchant id
-            qnbpay.SetMerchantPass(""); // Merchant pass (storekey)
-            qnbpay.SetUserCode(""); // Usercode
-            qnbpay.SetUserPass(""); // Userpass
-            qnbpay.SetAmount("1.00", "TRY"); // İptal tutarı ve para birimi
-            qnbpay.SetOrgOrderId("SYS_"); // Sipariş numarası
-            qnbpay.SetLanguage("TR"); // TR || EN
-            var response = qnbpay.Cancel();
+            var qnbpay = new Payfor(MODE.TEST); // PROD || TEST
+            qnbpay.SetMbrId("5"); // Mbr Id
+            qnbpay.SetMerchantId("085300000009704"); // Merchant id
+            qnbpay.SetMerchantPass("12345678"); // Merchant pass (storekey)
+            qnbpay.SetUserCode("QNB_API_KULLANICI_3DPAY"); // Usercode
+            qnbpay.SetUserPass("UcBN0"); // Userpass
+            var request = new Payfor.PayforRequest();
+            request.SetCurrency("TRY"); // Satış tutarı ve para birimi
+            request.SetOrgOrderId("SYS_"); // Sipariş numarası
+            request.SetLanguage("TR"); // TR || EN
+            var response = qnbpay.Cancel(request);
             if (response != null) {
                 Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
             }
