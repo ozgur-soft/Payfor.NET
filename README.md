@@ -1,5 +1,5 @@
 # Payfor.NET
-Payfor (Finansbank) Virtual POS API with .NET
+Payfor (Finansbank) POS API with .NET
 
 # Installation
 ```bash
