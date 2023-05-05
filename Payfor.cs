@@ -7,8 +7,8 @@ using System.Xml.Serialization;
 
 namespace Payfor {
     public enum MODE {
-        PROD,
-        TEST
+        Test,
+        Prod
     }
     public class Payfor {
         public string Mode { set; get; }
@@ -35,13 +35,13 @@ namespace Payfor {
         }
         public Payfor(MODE mode) {
             Mode = mode switch {
-                MODE.PROD => "PROD",
-                MODE.TEST => "TEST",
+                MODE.Test => "TEST",
+                MODE.Prod => "PROD",
                 _ => null
             };
             Endpoint = mode switch {
-                MODE.PROD => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
-                MODE.TEST => "https://vpostest.qnbfinansbank.com/Gateway/XmlGate.aspx",
+                MODE.Test => "https://vpostest.qnbfinansbank.com/Gateway/XmlGate.aspx",
+                MODE.Prod => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
                 _ => null
             };
         }
