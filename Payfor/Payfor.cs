@@ -159,7 +159,7 @@ namespace Payfor {
             return hash;
         }
         public string Create3DHash(PayforRequest data) {
-            var str = data.MbrId + data.OrderId + data.Amount + data.OkUrl + data.FailUrl + data.TxnType + data.Installment + data.Rnd + MerchantPass;
+            var str = MbrId + data.OrderId + data.Amount + data.OkUrl + data.FailUrl + data.TxnType + data.Installment + data.Rnd + MerchantPass;
             var hash = Hash(str);
             return hash;
         }
