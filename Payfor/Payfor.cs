@@ -7,8 +7,27 @@ using System.Xml.Serialization;
 
 namespace Payfor {
     public class Payfor {
-        private string Endpoint { get; set; }
-        private string Storekey { get; set; }
+        public string Endpoint { get; set; }
+        public string MbrId { set; get; }
+        public string MerchantId { get; set; }
+        public string MerchantPass { get; set; }
+        public string UserCode { set; get; }
+        public string UserPass { set; get; }
+        internal void SetMbrId(string mbrid) {
+            MbrId = mbrid;
+        }
+        internal void SetMerchantId(string merchantid) {
+            MerchantId = merchantid;
+        }
+        internal void SetMerchantPass(string merchantpass) {
+            MerchantPass = merchantpass;
+        }
+        internal void SetUserCode(string usercode) {
+            UserCode = usercode;
+        }
+        internal void SetUserPass(string userpass) {
+            UserPass = userpass;
+        }
         public Payfor(string mode) {
             Endpoint = mode switch {
                 "PROD" => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
@@ -60,18 +79,6 @@ namespace Payfor {
             public string MOTO { set; get; }
             [XmlElement("Lang", IsNullable = false)]
             public string Language { set; get; }
-            internal void SetMbrId(string mbrid) {
-                MbrId = mbrid;
-            }
-            internal void SetMerchantId(string merchantid) {
-                MerchantId = merchantid;
-            }
-            internal void SetUserCode(string usercode) {
-                UserCode = usercode;
-            }
-            internal void SetUserPass(string userpass) {
-                UserPass = userpass;
-            }
             internal void SetOrgOrderId(string orderid) {
                 OrgOrderId = orderid;
             }
@@ -99,7 +106,7 @@ namespace Payfor {
                 CardNumber = cardnumber;
             }
             internal void SetCardExpiry(string cardmonth, string cardyear) {
-                CardExpiry = cardmonth+cardyear;
+                CardExpiry = cardmonth + cardyear;
             }
             internal void SetCardCode(string cardcode) {
                 CardCode = cardcode;
@@ -161,9 +168,7 @@ namespace Payfor {
             payforrequest.Serialize(writer, data, ns);
             try {
                 using var http = new HttpClient();
-                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) {
-                    Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml")
-                };
+                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml") };
                 using var response = http.Send(request);
                 var result = (PayforResponse)payforresponse.Deserialize(response.Content.ReadAsStream());
                 return result;
@@ -185,9 +190,7 @@ namespace Payfor {
             payforrequest.Serialize(writer, data, ns);
             try {
                 using var http = new HttpClient();
-                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) {
-                    Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml")
-                };
+                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml") };
                 using var response = http.Send(request);
                 var result = (PayforResponse)payforresponse.Deserialize(response.Content.ReadAsStream());
                 return result;
@@ -209,9 +212,7 @@ namespace Payfor {
             payforrequest.Serialize(writer, data, ns);
             try {
                 using var http = new HttpClient();
-                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) {
-                    Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml")
-                };
+                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml") };
                 using var response = http.Send(request);
                 var result = (PayforResponse)payforresponse.Deserialize(response.Content.ReadAsStream());
                 return result;
