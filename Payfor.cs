@@ -16,8 +16,8 @@ namespace Payfor {
         public string MbrId { set; get; }
         public string MerchantId { get; set; }
         public string MerchantPass { get; set; }
-        public string UserCode { set; get; }
-        public string UserPass { set; get; }
+        public string Username { set; get; }
+        public string Password { set; get; }
         internal void SetMbrId(string mbrid) {
             MbrId = mbrid;
         }
@@ -27,11 +27,11 @@ namespace Payfor {
         internal void SetMerchantPass(string merchantpass) {
             MerchantPass = merchantpass;
         }
-        internal void SetUserCode(string usercode) {
-            UserCode = usercode;
+        internal void SetUsername(string username) {
+            Username = username;
         }
-        internal void SetUserPass(string userpass) {
-            UserPass = userpass;
+        internal void SetPassword(string password) {
+            Password = password;
         }
         public Payfor(MODE mode) {
             Mode = mode switch {
@@ -181,35 +181,57 @@ namespace Payfor {
             var hash = Hash(str);
             return hash == data.ResponseHash;
         }
-        public PayforResponse Auth(PayforRequest data) {
-            data.TxnType = "Auth";
-            data.SecureType = "NonSecure";
+        public PayforResponse PreAuth(PayforRequest data) {
             data.MbrId = MbrId;
             data.MerchantId = MerchantId;
-            data.UserCode = UserCode;
-            data.UserPass = UserPass;
+            data.UserCode = Username;
+            data.UserPass = Password;
+            data.TxnType = "PreAuth";
+            data.SecureType = "NonSecure";
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
+            return _Transaction(data);
+        }
+        public PayforResponse PostAuth(PayforRequest data) {
+            data.MbrId = MbrId;
+            data.MerchantId = MerchantId;
+            data.UserCode = Username;
+            data.UserPass = Password;
+            data.TxnType = "PostAuth";
+            data.SecureType = "NonSecure";
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
+            return _Transaction(data);
+        }
+        public PayforResponse Auth(PayforRequest data) {
+            data.MbrId = MbrId;
+            data.MerchantId = MerchantId;
+            data.UserCode = Username;
+            data.UserPass = Password;
+            data.TxnType = "Auth";
+            data.SecureType = "NonSecure";
             data.MOTO ??= "0";
             data.Language ??= "TR";
             return _Transaction(data);
         }
         public PayforResponse Refund(PayforRequest data) {
-            data.TxnType = "Refund";
-            data.SecureType = "NonSecure";
             data.MbrId = MbrId;
             data.MerchantId = MerchantId;
-            data.UserCode = UserCode;
-            data.UserPass = UserPass;
+            data.UserCode = Username;
+            data.UserPass = Password;
+            data.TxnType = "Refund";
+            data.SecureType = "NonSecure";
             data.MOTO ??= "0";
             data.Language ??= "TR";
             return _Transaction(data);
         }
         public PayforResponse Cancel(PayforRequest data) {
-            data.TxnType = "Void";
-            data.SecureType = "NonSecure";
             data.MbrId = MbrId;
             data.MerchantId = MerchantId;
-            data.UserCode = UserCode;
-            data.UserPass = UserPass;
+            data.UserCode = Username;
+            data.UserPass = Password;
+            data.TxnType = "Void";
+            data.SecureType = "NonSecure";
             data.MOTO ??= "0";
             data.Language ??= "TR";
             return _Transaction(data);
