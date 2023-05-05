@@ -11,7 +11,7 @@ dotnet add package Payfor --version 1.3.0
 namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var payfor = new Payfor(MODE.TEST); // PROD || TEST
+            var payfor = new Payfor(MODE.Test); // Çalışma ortamı
             payfor.SetMbrId("5"); // Mbr Id
             payfor.SetMerchantId("085300000009704"); // Merchant id
             payfor.SetMerchantPass("12345678"); // Merchant pass (storekey)
@@ -39,7 +39,7 @@ namespace Payfor {
 namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var payfor = new Payfor(MODE.TEST); // PROD || TEST
+            var payfor = new Payfor(MODE.Test); // Çalışma ortamı
             payfor.SetMbrId("5"); // Mbr Id
             payfor.SetMerchantId("085300000009704"); // Merchant id
             payfor.SetMerchantPass("12345678"); // Merchant pass (storekey)
@@ -63,7 +63,7 @@ namespace Payfor {
 namespace Payfor {
     internal class Program {
         static void Main(string[] args) {
-            var payfor = new Payfor(MODE.TEST); // PROD || TEST
+            var payfor = new Payfor(MODE.Test); // Çalışma ortamı
             payfor.SetMbrId("5"); // Mbr Id
             payfor.SetMerchantId("085300000009704"); // Merchant id
             payfor.SetMerchantPass("12345678"); // Merchant pass (storekey)
