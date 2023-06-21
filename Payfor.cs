@@ -11,13 +11,14 @@ namespace Payfor {
         Prod
     }
     public class Payfor {
-        public string Mode { set; get; }
-        public string Endpoint { get; set; }
-        public string MbrId { set; get; }
-        public string MerchantId { get; set; }
-        public string MerchantPass { get; set; }
-        public string Username { set; get; }
-        public string Password { set; get; }
+        private string Mode { set; get; }
+        private string Endpoint { get; set; }
+        private string MbrId { set; get; }
+        private string MerchantId { get; set; }
+        private string MerchantPass { get; set; }
+        private string Username { set; get; }
+        private string Password { set; get; }
+        private string StoreKey { get; set; }
         public void SetMbrId(string mbrid) {
             MbrId = mbrid;
         }
@@ -32,6 +33,9 @@ namespace Payfor {
         }
         public void SetPassword(string password) {
             Password = password;
+        }
+        public void SetStoreKey(string storekey) {
+            StoreKey = storekey;
         }
         public Payfor(MODE mode) {
             Mode = mode switch {
@@ -164,12 +168,24 @@ namespace Payfor {
             [XmlElement("ErrMsg")]
             public string ErrMsg { init; get; }
         }
+        [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.ReturnValue, AllowMultiple = true)]
+        public class FormElementAttribute : Attribute {
+            public string Key { get; }
+            public FormElementAttribute(string key) {
+                Key = key;
+            }
+        }
         public class Writer : StringWriter {
             public override Encoding Encoding => Encoding.UTF8;
         }
+        public static string Json<T>(T data) where T : class {
+            return JsonSerializer.Serialize(data, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, WriteIndented = true });
+        }
+        public static byte[] Byte(string data) {
+            return Encoding.ASCII.GetBytes(data);
+        }
         public static string Hash(string data) {
-            var hash = Convert.ToBase64String(SHA1.Create().ComputeHash(Encoding.ASCII.GetBytes(data)));
-            return hash;
+            return Convert.ToBase64String(SHA1.Create().ComputeHash(Byte(data)));
         }
         public string Create3DHash(PayforRequest data) {
             var str = MbrId + data.OrderId + data.Amount + data.OkUrl + data.FailUrl + data.TxnType + data.Installment + data.Rnd + MerchantPass;
@@ -257,9 +273,6 @@ namespace Payfor {
                 }
             }
             return null;
-        }
-        public static string JsonString<T>(T data) where T : class {
-            return JsonSerializer.Serialize(data, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, WriteIndented = true });
         }
     }
 }
