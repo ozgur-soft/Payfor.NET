@@ -62,7 +62,7 @@ namespace Payfor {
             [XmlElement("SecureType", IsNullable = false)]
             public string SecureType { set; get; }
             [XmlElement("TxnType", IsNullable = false)]
-            public string TxnType { set; get; }
+            public string TransactionType { set; get; }
             [XmlElement("PurchAmount", IsNullable = false)]
             public string Amount { set; get; }
             [XmlElement("Currency", IsNullable = false)]
@@ -86,7 +86,7 @@ namespace Payfor {
             [XmlElement("FailUrl", IsNullable = false)]
             public string FailUrl { set; get; }
             [XmlElement("Rnd", IsNullable = false)]
-            public string Rnd { set; get; }
+            public string Random { set; get; }
             [XmlElement("Hash", IsNullable = false)]
             public string Hash { set; get; }
             [XmlElement("MOTO", IsNullable = false)]
@@ -187,22 +187,12 @@ namespace Payfor {
         public static string Hash(string data) {
             return Convert.ToBase64String(SHA1.Create().ComputeHash(Byte(data)));
         }
-        public string Create3DHash(PayforRequest data) {
-            var str = MbrId + data.OrderId + data.Amount + data.OkUrl + data.FailUrl + data.TxnType + data.Installment + data.Rnd + MerchantPass;
-            var hash = Hash(str);
-            return hash;
-        }
-        public bool Check3DHash(PayforResponse data) {
-            var str = MerchantId + MerchantPass + data.OrderId + data.AuthCode + data.ProcReturnCode + data.Status3D + data.ResponseRnd + Username;
-            var hash = Hash(str);
-            return hash == data.ResponseHash;
-        }
         public PayforResponse PreAuth(PayforRequest data) {
             data.MbrId = MbrId;
             data.MerchantId = MerchantId;
             data.UserCode = Username;
             data.UserPass = Password;
-            data.TxnType = "PreAuth";
+            data.TransactionType = "PreAuth";
             data.SecureType = "NonSecure";
             data.MOTO ??= "0";
             data.Language ??= "TR";
@@ -213,7 +203,7 @@ namespace Payfor {
             data.MerchantId = MerchantId;
             data.UserCode = Username;
             data.UserPass = Password;
-            data.TxnType = "PostAuth";
+            data.TransactionType = "PostAuth";
             data.SecureType = "NonSecure";
             data.MOTO ??= "0";
             data.Language ??= "TR";
@@ -224,7 +214,7 @@ namespace Payfor {
             data.MerchantId = MerchantId;
             data.UserCode = Username;
             data.UserPass = Password;
-            data.TxnType = "Auth";
+            data.TransactionType = "Auth";
             data.SecureType = "NonSecure";
             data.MOTO ??= "0";
             data.Language ??= "TR";
@@ -235,7 +225,7 @@ namespace Payfor {
             data.MerchantId = MerchantId;
             data.UserCode = Username;
             data.UserPass = Password;
-            data.TxnType = "Refund";
+            data.TransactionType = "Refund";
             data.SecureType = "NonSecure";
             data.MOTO ??= "0";
             data.Language ??= "TR";
@@ -246,7 +236,7 @@ namespace Payfor {
             data.MerchantId = MerchantId;
             data.UserCode = Username;
             data.UserPass = Password;
-            data.TxnType = "Void";
+            data.TransactionType = "Void";
             data.SecureType = "NonSecure";
             data.MOTO ??= "0";
             data.Language ??= "TR";
