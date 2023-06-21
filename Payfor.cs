@@ -49,7 +49,7 @@ namespace Payfor {
                 _ => null
             };
         }
-        [Serializable, XmlRoot("PayforRequest")]
+        [XmlRoot("PayforRequest")]
         public class PayforRequest {
             [XmlElement("MbrId", IsNullable = false)]
             public string MbrId { set; get; }
@@ -145,7 +145,7 @@ namespace Payfor {
                 MOTO = moto;
             }
         }
-        [Serializable, XmlRoot("PayforResponse")]
+        [XmlRoot("PayforResponse")]
         public class PayforResponse {
             [XmlElement("OrderId")]
             public string OrderId { init; get; }
@@ -168,7 +168,6 @@ namespace Payfor {
             [XmlElement("ErrMsg")]
             public string ErrMsg { init; get; }
         }
-        [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.ReturnValue, AllowMultiple = true)]
         public class FormElementAttribute : Attribute {
             public string Key { get; }
             public FormElementAttribute(string key) {
