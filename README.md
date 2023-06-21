@@ -27,7 +27,7 @@ namespace Payfor {
             request.SetLanguage("TR"); // TR || EN
             var response = payfor.Auth(request);
             if (response != null) {
-                Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
+                Console.WriteLine(Payfor.Json<Payfor.PayforResponse>(response));
             }
         }
     }
@@ -51,7 +51,7 @@ namespace Payfor {
             request.SetLanguage("TR"); // TR || EN
             var response = payfor.Refund(request);
             if (response != null) {
-                Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
+                Console.WriteLine(Payfor.Json<Payfor.PayforResponse>(response));
             }
         }
     }
@@ -75,7 +75,7 @@ namespace Payfor {
             request.SetLanguage("TR"); // TR || EN
             var response = payfor.Cancel(request);
             if (response != null) {
-                Console.WriteLine(Payfor.JsonString<Payfor.PayforResponse>(response));
+                Console.WriteLine(Payfor.Json<Payfor.PayforResponse>(response));
             }
         }
     }
