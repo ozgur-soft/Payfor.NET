@@ -251,7 +251,7 @@ namespace Payfor {
             data.Language ??= "TR";
             return _Transaction(data);
         }
-        public Dictionary<string, string> Auth3d(PayforRequest data) {
+        public Dictionary<string, string> Auth3dForm(PayforRequest data) {
             data.MbrId = MbrId;
             data.MerchantId = MerchantId;
             data.UserCode = Username;
