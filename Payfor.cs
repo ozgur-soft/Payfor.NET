@@ -251,11 +251,45 @@ namespace Payfor {
             data.Language ??= "TR";
             return _Transaction(data);
         }
+        public PayforResponse PreAuth3d(PayforRequest data) {
+            data.SecureType = "3DModelPayment";
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
+            return _Transaction(data);
+        }
+        public PayforResponse Auth3d(PayforRequest data) {
+            data.SecureType = "3DModelPayment";
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
+            return _Transaction(data);
+        }
+        public Dictionary<string, string> PreAuth3dForm(PayforRequest data) {
+            data.MbrId = MbrId;
+            data.MerchantId = MerchantId;
+            data.UserCode = Username;
+            data.TransactionType = "PreAuth";
+            data.SecureType = "3DModel";
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
+            data.Random = new Random().Next(100000, 999999).ToString();
+            data.Hash = Hash(data.MbrId + data.OrderId + data.Amount + data.OkUrl + data.FailUrl + data.TransactionType + data.Installment + data.Random + StoreKey);
+            var form = new Dictionary<string, string>();
+            if (data != null) {
+                var elements = data.GetType().GetProperties().Where(x => x.GetCustomAttribute<FormElementAttribute>() != null);
+                foreach (var element in elements) {
+                    var key = element.GetCustomAttribute<FormElementAttribute>().Key;
+                    var value = element.GetValue(data)?.ToString();
+                    if (!string.IsNullOrEmpty(value)) {
+                        form.Add(key, value);
+                    }
+                }
+            }
+            return form;
+        }
         public Dictionary<string, string> Auth3dForm(PayforRequest data) {
             data.MbrId = MbrId;
             data.MerchantId = MerchantId;
             data.UserCode = Username;
-            data.UserPass = Password;
             data.TransactionType = "Auth";
             data.SecureType = "3DModel";
             data.MOTO ??= "0";
