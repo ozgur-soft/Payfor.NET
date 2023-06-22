@@ -14,7 +14,6 @@ namespace Payfor {
             var payfor = new Payfor(MODE.Test); // Çalışma ortamı
             payfor.SetMbrId("5"); // Mbr Id
             payfor.SetMerchantId("085300000009704"); // İşyeri numarası
-            payfor.SetMerchantPass("12345678"); // İşyeri anahtarı
             payfor.SetUsername("QNB_API_KULLANICI_3DPAY"); // Kullanıcı adı
             payfor.SetPassword("UcBN0"); // Kullanıcı şifresi
             var request = new Payfor.PayforRequest();
@@ -42,7 +41,6 @@ namespace Payfor {
             var payfor = new Payfor(MODE.Test); // Çalışma ortamı
             payfor.SetMbrId("5"); // Mbr Id
             payfor.SetMerchantId("085300000009704"); // İşyeri numarası
-            payfor.SetMerchantPass("12345678"); // İşyeri anahtarı
             payfor.SetUsername("QNB_API_KULLANICI_3DPAY"); // Kullanıcı adı
             payfor.SetPassword("UcBN0"); // Kullanıcı şifresi
             var request = new Payfor.PayforRequest();
@@ -66,7 +64,6 @@ namespace Payfor {
             var payfor = new Payfor(MODE.Test); // Çalışma ortamı
             payfor.SetMbrId("5"); // Mbr Id
             payfor.SetMerchantId("085300000009704"); // İşyeri numarası
-            payfor.SetMerchantPass("12345678"); // İşyeri anahtarı
             payfor.SetUsername("QNB_API_KULLANICI_3DPAY"); // Kullanıcı adı
             payfor.SetPassword("UcBN0"); // Kullanıcı şifresi
             var request = new Payfor.PayforRequest();
