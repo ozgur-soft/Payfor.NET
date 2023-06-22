@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -11,11 +12,9 @@ namespace Payfor {
         Prod
     }
     public class Payfor {
-        private string Mode { set; get; }
         private string Endpoint { get; set; }
         private string MbrId { set; get; }
         private string MerchantId { get; set; }
-        private string MerchantPass { get; set; }
         private string Username { set; get; }
         private string Password { set; get; }
         private string StoreKey { get; set; }
@@ -24,9 +23,6 @@ namespace Payfor {
         }
         public void SetMerchantId(string merchantid) {
             MerchantId = merchantid;
-        }
-        public void SetMerchantPass(string merchantpass) {
-            MerchantPass = merchantpass;
         }
         public void SetUsername(string username) {
             Username = username;
@@ -38,11 +34,6 @@ namespace Payfor {
             StoreKey = storekey;
         }
         public Payfor(MODE mode) {
-            Mode = mode switch {
-                MODE.Test => "TEST",
-                MODE.Prod => "PROD",
-                _ => null
-            };
             Endpoint = mode switch {
                 MODE.Test => "https://vpostest.qnbfinansbank.com/Gateway/XmlGate.aspx",
                 MODE.Prod => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
@@ -51,46 +42,65 @@ namespace Payfor {
         }
         [XmlRoot("PayforRequest")]
         public class PayforRequest {
+            [FormElement("MbrId")]
             [XmlElement("MbrId", IsNullable = false)]
             public string MbrId { set; get; }
+            [FormElement("MerchantId")]
             [XmlElement("MerchantId", IsNullable = false)]
             public string MerchantId { set; get; }
+            [FormElement("UserCode")]
             [XmlElement("UserCode", IsNullable = false)]
             public string UserCode { set; get; }
             [XmlElement("UserPass", IsNullable = false)]
             public string UserPass { set; get; }
+            [FormElement("SecureType")]
             [XmlElement("SecureType", IsNullable = false)]
             public string SecureType { set; get; }
+            [FormElement("TxnType")]
             [XmlElement("TxnType", IsNullable = false)]
             public string TransactionType { set; get; }
+            [FormElement("PurchAmount")]
             [XmlElement("PurchAmount", IsNullable = false)]
             public string Amount { set; get; }
+            [FormElement("Currency")]
             [XmlElement("Currency", IsNullable = false)]
             public string Currency { set; get; }
+            [FormElement("InstallmentCount")]
             [XmlElement("InstallmentCount", IsNullable = false)]
             public string Installment { set; get; }
+            [FormElement("CardHolderName")]
             [XmlElement("CardHolderName", IsNullable = false)]
             public string CardHolder { set; get; }
+            [FormElement("Pan")]
             [XmlElement("Pan", IsNullable = false)]
             public string CardNumber { set; get; }
+            [FormElement("Expiry")]
             [XmlElement("Expiry", IsNullable = false)]
             public string CardExpiry { set; get; }
+            [FormElement("Cvv2")]
             [XmlElement("Cvv2", IsNullable = false)]
             public string CardCode { set; get; }
+            [FormElement("OrderId")]
             [XmlElement("OrderId", IsNullable = false)]
             public string OrderId { set; get; }
             [XmlElement("OrgOrderId", IsNullable = false)]
             public string OrgOrderId { set; get; }
+            [FormElement("OkUrl")]
             [XmlElement("OkUrl", IsNullable = false)]
             public string OkUrl { set; get; }
+            [FormElement("FailUrl")]
             [XmlElement("FailUrl", IsNullable = false)]
             public string FailUrl { set; get; }
+            [FormElement("Rnd")]
             [XmlElement("Rnd", IsNullable = false)]
             public string Random { set; get; }
+            [FormElement("Hash")]
             [XmlElement("Hash", IsNullable = false)]
             public string Hash { set; get; }
+            [FormElement("MOTO")]
             [XmlElement("MOTO", IsNullable = false)]
             public string MOTO { set; get; }
+            [FormElement("Lang")]
             [XmlElement("Lang", IsNullable = false)]
             public string Language { set; get; }
             public void SetOrgOrderId(string orderid) {
@@ -240,6 +250,30 @@ namespace Payfor {
             data.MOTO ??= "0";
             data.Language ??= "TR";
             return _Transaction(data);
+        }
+        public Dictionary<string, string> Auth3d(PayforRequest data) {
+            data.MbrId = MbrId;
+            data.MerchantId = MerchantId;
+            data.UserCode = Username;
+            data.UserPass = Password;
+            data.TransactionType = "Auth";
+            data.SecureType = "3DModel";
+            data.MOTO ??= "0";
+            data.Language ??= "TR";
+            data.Random = new Random().Next(100000, 999999).ToString();
+            data.Hash = Hash(data.MbrId + data.OrderId + data.Amount + data.OkUrl + data.FailUrl + data.TransactionType + data.Installment + data.Random + StoreKey);
+            var form = new Dictionary<string, string>();
+            if (data != null) {
+                var elements = data.GetType().GetProperties().Where(x => x.GetCustomAttribute<FormElementAttribute>() != null);
+                foreach (var element in elements) {
+                    var key = element.GetCustomAttribute<FormElementAttribute>().Key;
+                    var value = element.GetValue(data)?.ToString();
+                    if (!string.IsNullOrEmpty(value)) {
+                        form.Add(key, value);
+                    }
+                }
+            }
+            return form;
         }
         private PayforResponse _Transaction(PayforRequest data) {
             var payforrequest = new XmlSerializer(typeof(PayforRequest));
