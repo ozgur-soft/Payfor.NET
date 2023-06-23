@@ -12,11 +12,11 @@ namespace Payfor {
         Prod
     }
     public class Payfor {
-        private string Endpoint { get; set; }
-        private string MbrId { set; get; }
+        public string Endpoint { get; set; }
+        private string MbrId { get; set; }
         private string MerchantId { get; set; }
-        private string Username { set; get; }
-        private string Password { set; get; }
+        private string Username { get; set; }
+        private string Password { get; set; }
         private string StoreKey { get; set; }
         public void SetMbrId(string mbrid) {
             MbrId = mbrid;
@@ -44,65 +44,65 @@ namespace Payfor {
         public class PayforRequest {
             [FormElement("MbrId")]
             [XmlElement("MbrId", IsNullable = false)]
-            public string MbrId { set; get; }
+            public string MbrId { get; set; }
             [FormElement("MerchantId")]
             [XmlElement("MerchantId", IsNullable = false)]
-            public string MerchantId { set; get; }
+            public string MerchantId { get; set; }
             [FormElement("UserCode")]
             [XmlElement("UserCode", IsNullable = false)]
-            public string UserCode { set; get; }
+            public string UserCode { get; set; }
             [XmlElement("UserPass", IsNullable = false)]
-            public string UserPass { set; get; }
+            public string UserPass { get; set; }
             [FormElement("SecureType")]
             [XmlElement("SecureType", IsNullable = false)]
-            public string SecureType { set; get; }
+            public string SecureType { get; set; }
             [FormElement("TxnType")]
             [XmlElement("TxnType", IsNullable = false)]
-            public string TransactionType { set; get; }
+            public string TransactionType { get; set; }
             [FormElement("PurchAmount")]
             [XmlElement("PurchAmount", IsNullable = false)]
-            public string Amount { set; get; }
+            public string Amount { get; set; }
             [FormElement("Currency")]
             [XmlElement("Currency", IsNullable = false)]
-            public string Currency { set; get; }
+            public string Currency { get; set; }
             [FormElement("InstallmentCount")]
             [XmlElement("InstallmentCount", IsNullable = false)]
-            public string Installment { set; get; }
+            public string Installment { get; set; }
             [FormElement("CardHolderName")]
             [XmlElement("CardHolderName", IsNullable = false)]
-            public string CardHolder { set; get; }
+            public string CardHolder { get; set; }
             [FormElement("Pan")]
             [XmlElement("Pan", IsNullable = false)]
-            public string CardNumber { set; get; }
+            public string CardNumber { get; set; }
             [FormElement("Expiry")]
             [XmlElement("Expiry", IsNullable = false)]
-            public string CardExpiry { set; get; }
+            public string CardExpiry { get; set; }
             [FormElement("Cvv2")]
             [XmlElement("Cvv2", IsNullable = false)]
-            public string CardCode { set; get; }
+            public string CardCode { get; set; }
             [FormElement("OrderId")]
             [XmlElement("OrderId", IsNullable = false)]
-            public string OrderId { set; get; }
+            public string OrderId { get; set; }
             [XmlElement("OrgOrderId", IsNullable = false)]
-            public string OrgOrderId { set; get; }
+            public string OrgOrderId { get; set; }
             [FormElement("OkUrl")]
             [XmlElement("OkUrl", IsNullable = false)]
-            public string OkUrl { set; get; }
+            public string OkUrl { get; set; }
             [FormElement("FailUrl")]
             [XmlElement("FailUrl", IsNullable = false)]
-            public string FailUrl { set; get; }
+            public string FailUrl { get; set; }
             [FormElement("Rnd")]
             [XmlElement("Rnd", IsNullable = false)]
-            public string Random { set; get; }
+            public string Random { get; set; }
             [FormElement("Hash")]
             [XmlElement("Hash", IsNullable = false)]
-            public string Hash { set; get; }
+            public string Hash { get; set; }
             [FormElement("MOTO")]
             [XmlElement("MOTO", IsNullable = false)]
-            public string MOTO { set; get; }
+            public string MOTO { get; set; }
             [FormElement("Lang")]
             [XmlElement("Lang", IsNullable = false)]
-            public string Language { set; get; }
+            public string Language { get; set; }
             public void SetOrgOrderId(string orderid) {
                 OrgOrderId = orderid;
             }
