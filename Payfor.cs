@@ -35,8 +35,8 @@ namespace Payfor {
         }
         public Payfor(MODE mode) {
             Endpoint = mode switch {
-                MODE.Test => "https://vpostest.qnbfinansbank.com/Gateway/XmlGate.aspx",
-                MODE.Prod => "https://vpos.qnbfinansbank.com/Gateway/XmlGate.aspx",
+                MODE.Test => "https://vpostest.qnbfinansbank.com/Gateway",
+                MODE.Prod => "https://vpos.qnbfinansbank.com/Gateway",
                 _ => null
             };
         }
@@ -318,7 +318,7 @@ namespace Payfor {
             payforrequest.Serialize(writer, data, ns);
             try {
                 using var http = new HttpClient();
-                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml") };
+                using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint + "/XmlGate.aspx") { Content = new StringContent(writer.ToString(), Encoding.UTF8, "text/xml") };
                 using var response = http.Send(request);
                 var result = (PayforResponse)payforresponse.Deserialize(response.Content.ReadAsStream());
                 return result;
