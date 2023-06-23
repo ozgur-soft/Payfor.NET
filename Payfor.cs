@@ -269,6 +269,7 @@ namespace Payfor {
             data.UserCode = Username;
             data.TransactionType = "PreAuth";
             data.SecureType = "3DModel";
+            data.Installment ??= "0";
             data.MOTO ??= "0";
             data.Language ??= "TR";
             data.Random = new Random().Next(100000, 999999).ToString();
@@ -292,6 +293,7 @@ namespace Payfor {
             data.UserCode = Username;
             data.TransactionType = "Auth";
             data.SecureType = "3DModel";
+            data.Installment ??= "0";
             data.MOTO ??= "0";
             data.Language ??= "TR";
             data.Random = new Random().Next(100000, 999999).ToString();
