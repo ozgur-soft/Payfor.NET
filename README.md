@@ -3,7 +3,7 @@ Payfor (Finansbank) POS API with .NET
 
 # Installation
 ```bash
-dotnet add package Payfor --version 1.4.0
+dotnet add package Payfor --version 1.4.1
 ```
 
 # Satış
