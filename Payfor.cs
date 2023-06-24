@@ -85,6 +85,8 @@ namespace Payfor {
             public string OrderId { get; set; }
             [XmlElement("OrgOrderId", IsNullable = false)]
             public string OrgOrderId { get; set; }
+            [XmlElement("RequestGuid", IsNullable = false)]
+            public string RequestGuid { get; set; }
             [FormElement("OkUrl")]
             [XmlElement("OkUrl", IsNullable = false)]
             public string OkUrl { get; set; }
@@ -252,14 +254,16 @@ namespace Payfor {
             return _Transaction(data);
         }
         public PayforResponse PreAuth3d(PayforRequest data) {
+            data.UserCode = Username;
+            data.UserPass = Password;
             data.SecureType = "3DModelPayment";
-            data.MOTO ??= "0";
             data.Language ??= "TR";
             return _Transaction(data);
         }
         public PayforResponse Auth3d(PayforRequest data) {
+            data.UserCode = Username;
+            data.UserPass = Password;
             data.SecureType = "3DModelPayment";
-            data.MOTO ??= "0";
             data.Language ??= "TR";
             return _Transaction(data);
         }
