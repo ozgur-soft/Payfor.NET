@@ -193,7 +193,7 @@ namespace Payfor {
             return JsonSerializer.Serialize(data, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, WriteIndented = true });
         }
         public static byte[] Byte(string data) {
-            return Encoding.ASCII.GetBytes(data);
+            return Encoding.UTF8.GetBytes(data);
         }
         public static string Hash(string data) {
             return Convert.ToBase64String(SHA1.Create().ComputeHash(Byte(data)));
@@ -278,18 +278,16 @@ namespace Payfor {
             data.Language ??= "TR";
             data.Random = new Random().Next(100000, 999999).ToString();
             data.Hash = Hash(data.MbrId + data.OrderId + data.Amount + data.OkUrl + data.FailUrl + data.TransactionType + data.Installment + data.Random + StoreKey);
-            var form = new Dictionary<string, string>();
-            if (data != null) {
-                var elements = data.GetType().GetProperties().Where(x => x.GetCustomAttribute<FormElementAttribute>() != null);
-                foreach (var element in elements) {
-                    var key = element.GetCustomAttribute<FormElementAttribute>().Key;
-                    var value = element.GetValue(data)?.ToString();
-                    if (!string.IsNullOrEmpty(value)) {
-                        form.Add(key, value);
-                    }
+            var form = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            var elements = data.GetType().GetProperties().Where(x => x.GetCustomAttribute<FormElementAttribute>() != null);
+            foreach (var element in elements) {
+                var key = element.GetCustomAttribute<FormElementAttribute>().Key;
+                var value = element.GetValue(data)?.ToString();
+                if (!string.IsNullOrEmpty(value)) {
+                    form.Add(key, value);
                 }
             }
-            return form;
+            return form.OrderBy(key => key.Key, StringComparer.InvariantCultureIgnoreCase).ToDictionary(x => x.Key, x => x.Value);
         }
         public Dictionary<string, string> Auth3dForm(PayforRequest data) {
             data.MbrId = MbrId;
@@ -302,18 +300,16 @@ namespace Payfor {
             data.Language ??= "TR";
             data.Random = new Random().Next(100000, 999999).ToString();
             data.Hash = Hash(data.MbrId + data.OrderId + data.Amount + data.OkUrl + data.FailUrl + data.TransactionType + data.Installment + data.Random + StoreKey);
-            var form = new Dictionary<string, string>();
-            if (data != null) {
-                var elements = data.GetType().GetProperties().Where(x => x.GetCustomAttribute<FormElementAttribute>() != null);
-                foreach (var element in elements) {
-                    var key = element.GetCustomAttribute<FormElementAttribute>().Key;
-                    var value = element.GetValue(data)?.ToString();
-                    if (!string.IsNullOrEmpty(value)) {
-                        form.Add(key, value);
-                    }
+            var form = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            var elements = data.GetType().GetProperties().Where(x => x.GetCustomAttribute<FormElementAttribute>() != null);
+            foreach (var element in elements) {
+                var key = element.GetCustomAttribute<FormElementAttribute>().Key;
+                var value = element.GetValue(data)?.ToString();
+                if (!string.IsNullOrEmpty(value)) {
+                    form.Add(key, value);
                 }
             }
-            return form;
+            return form.OrderBy(key => key.Key, StringComparer.InvariantCultureIgnoreCase).ToDictionary(x => x.Key, x => x.Value);
         }
         private PayforResponse _Transaction(PayforRequest data) {
             var payforrequest = new XmlSerializer(typeof(PayforRequest));
